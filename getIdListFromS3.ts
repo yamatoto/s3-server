@@ -5,10 +5,6 @@ import AWS from 'aws-sdk';
 
 const ssm = new AWS.SSM({ region: 'ap-northeast-1' });
 const s3Client = new S3Client({ region: 'ap-northeast-1' });
-const request = {
-    Name: 'BUCKET_NAME_ID_LIST',
-    WithDecryption: true,
-};
 
 const streamToList = (stream: SdkStream<Readable>): Promise<string[]> =>
     new Promise((resolve, reject) => {
@@ -29,7 +25,12 @@ const streamToList = (stream: SdkStream<Readable>): Promise<string[]> =>
 
 export async function getIdListFromS3(): Promise<string[]> {
     try {
-        const { Parameter } = await ssm.getParameter(request).promise();
+        const { Parameter } = await ssm
+            .getParameter({
+                Name: 'BUCKET_NAME_ID_LIST',
+                WithDecryption: true,
+            })
+            .promise();
         const { Body } = await s3Client.send(
             new GetObjectCommand({
                 Bucket: Parameter?.Value,
