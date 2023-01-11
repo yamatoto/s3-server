@@ -27,15 +27,15 @@ const streamToList = (stream: SdkStream<Readable>): Promise<string[]> =>
     });
 
 export async function getIdListFromS3(): Promise<string[]> {
-    const { Parameter } = await ssm.getParameter(request).promise();
-    const BUCKET_PARAMS = {
-        Bucket: Parameter?.Value,
-        Key: 'idList.csv',
-    };
-
     try {
+        const { Parameter } = await ssm.getParameter(request).promise();
         const s3Client = new S3Client({ region: 'ap-northeast-1' });
-        const { Body } = await s3Client.send(new GetObjectCommand(BUCKET_PARAMS));
+        const { Body } = await s3Client.send(
+            new GetObjectCommand({
+                Bucket: Parameter?.Value,
+                Key: 'idList.csv',
+            })
+        );
         return await streamToList(Body as SdkStream<Readable>);
     } catch (e) {
         console.error(`List取得でエラー発生:${(e as Error).message}`, e);
