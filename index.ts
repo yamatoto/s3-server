@@ -4,16 +4,16 @@ import { getIdListFromS3 } from './getIdListFromS3';
 const app = express();
 const port = 3000;
 
-// t3
+// test2
 app.get('/', async (req, res) => {
     const ids = await getIdListFromS3();
     res.send(ids);
-    // aaaaaconflict!!!!
+    // conflict!!!!
 });
 
 app.listen(port, () => {
-    //aaa conflict!!!!
+    // conflict!!!!
     console.log(`Example app listening on port ${port}`);
-    //aaaa conflict!!!!
+    // conflict!!!!
 });
 // ma
