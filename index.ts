@@ -8,8 +8,11 @@ const port = 3000;
 app.get('/', async (req, res) => {
     const ids = await getIdListFromS3();
     res.send(ids);
+    // conflict!!!!
 });
 
 app.listen(port, () => {
+    // conflict!!!!
     console.log(`Example app listening on port ${port}`);
+    // conflict!!!!
 });
